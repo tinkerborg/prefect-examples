@@ -13,7 +13,7 @@ from prefect import flow, get_run_logger, tags
 # The arguments to the flow are type annotated and Prefect will validate them at runtime
 @flow
 def hello(name: str = "Marvin"):
-    get_run_logger().info(f"Hello, {name}!")
+    get_run_logger().info(f"Hello, {name}! Is there anybody out there?")
     return {"moo": "foo"}
 
 
