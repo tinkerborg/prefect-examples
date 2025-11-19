@@ -11,7 +11,7 @@ from prefect import flow, get_run_logger, tags
 
 # The name of the flow, `hello` is inferred from the function name by default
 # The arguments to the flow are type annotated and Prefect will validate them at runtime
-@flow
+@flow(persist_result=True)
 def hello(name: str = "Marvin"):
     get_run_logger().info(f"Hello, {name}! Is there anybody out there?")
     return {"moo": "foo"}
