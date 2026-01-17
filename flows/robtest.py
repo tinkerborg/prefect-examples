@@ -8,6 +8,7 @@ A simple flow that says hello.
 
 from datetime import date
 from prefect import flow, get_run_logger, tags
+from prefect.artifacts import create_table_artifact
 
 
 # The name of the flow, `hello` is inferred from the function name by default
