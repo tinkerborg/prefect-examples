@@ -6,6 +6,7 @@
 A simple flow that says hello.
 """
 
+from datetime import date
 from prefect import flow, get_run_logger, tags
 
 
@@ -14,6 +15,17 @@ from prefect import flow, get_run_logger, tags
 @flow(persist_result=True)
 def hello(name: str = "Marvin"):
     get_run_logger().info(f"Hello, {name}! Is there anybody out there?")
+    today = date.today()
+
+    create_table_artifact(
+        key="files",
+        table={
+            'foo': True,
+            'when': today
+        },
+        description="Flow execution results"
+    ) 
+
     return {"moo": "foo"}
 
 
