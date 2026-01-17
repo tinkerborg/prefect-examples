@@ -18,16 +18,7 @@ def hello(name: str = "Marvin"):
     get_run_logger().info(f"Hello, {name}! Is there anybody out there?")
     today = date.today()
 
-    create_table_artifact(
-        key="files",
-        table={
-            'foo': True,
-            'when': today
-        },
-        description="Flow execution results"
-    ) 
-
-    return {"moo": "foo"}
+    return {"moo": "foo", "when": today}
 
 
 if __name__ == "__main__":
