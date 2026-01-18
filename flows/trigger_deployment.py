@@ -1,4 +1,4 @@
-from prefect import flow
+from prefect import flow, get_client
 from prefect.deployments import run_deployment
 from uuid import UUID
 
@@ -8,15 +8,15 @@ def trigger_deployment(deployment_id: str):
     Audit flow that programmatically starts a run for a given deployment ID.
     """
     print(f"Received event for new deployment: {deployment_id}")
+
+    with get_client(sync_client=True) as client:
+        deployment = client.read_deployment(deployment_id)
+        
+        # Only run if it has the tag
+        if "initial-deployment" in deployment.tags:
+            client.create_flow_run_from_deployment(deployment_id=deployment_id)
     
-    # Trigger the deployment. run_deployment accepts UUID or 'flow/deployment' name.
-    # We use timeout=0 to return immediately so the audit flow finishes quickly.
-    flow_run = run_deployment(
-        deployment_id,
-        timeout=0
-    )
-    
-    print(f"Successfully triggered run {flow_run.id} for deployment {deployment_id}")
+            print(f"Successfully triggered run {flow_run.id} for deployment {deployment_id}")
 
 if __name__ == "__main__":
     # Deploy this audit flow once so it has a stable UUID
