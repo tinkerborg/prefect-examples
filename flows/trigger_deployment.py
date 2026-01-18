@@ -1,7 +1,7 @@
 from prefect import flow, get_client
 from prefect.deployments import run_deployment
 from uuid import UUID
-from prefect.client.schemas.filters import FlowRunFilter, DeploymentFilter
+from prefect.client.schemas.filters import FlowRunFilter, DeploymentFilter, FlowRunFilterTags
 
 @flow(log_prints=True)
 def trigger_deployment(deployment_id: str):
@@ -14,7 +14,9 @@ def trigger_deployment(deployment_id: str):
         flow_runs = client.read_flow_runs(
             flow_run_filter=FlowRunFilter(
                 deployment_id={"any_": [deployment_id]},
-                labels={"triggered-by": ["initial-deployment-automation"]}
+                tags=FlowRunFilterTags(
+                    all_=["initial-deployment-automation"]
+                )
             ),
             limit=100
         )
@@ -31,7 +33,8 @@ def trigger_deployment(deployment_id: str):
         if "initial-deployment" in deployment.tags:
             flow_run = client.create_flow_run_from_deployment(
                 deployment_id=deployment_id,
-                labels={"triggered-by": "initial-deployment-automation"}
+                labels={"triggered-by": "initial-deployment-automation"},
+                tags=["initial-deployment-automation"]
             )
     
             print(f"Successfully triggered run {flow_run.id} for deployment {deployment_id}")
