@@ -13,7 +13,8 @@ def trigger_deployment(deployment_id: str):
     with get_client(sync_client=True) as client:
         flow_runs = client.read_flow_runs(
             flow_run_filter=FlowRunFilter(
-                deployment_id={"any_": [deployment_id]}
+                deployment_id={"any_": [deployment_id]},
+                labels={"triggered-by": ["initial-deployment-automation"]}
             ),
             limit=100
         )
@@ -28,7 +29,10 @@ def trigger_deployment(deployment_id: str):
         
         # Only run if it has the tag
         if "initial-deployment" in deployment.tags:
-            flow_run = client.create_flow_run_from_deployment(deployment_id=deployment_id)
+            flow_run = client.create_flow_run_from_deployment(
+                deployment_id=deployment_id,
+                labels={"triggered-by": "initial-deployment-automation"}
+            )
     
             print(f"Successfully triggered run {flow_run.id} for deployment {deployment_id}")
         else: 
