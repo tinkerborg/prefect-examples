@@ -20,24 +20,19 @@ def trigger_deployment(deployment_id: str):
             ),
             limit=100
         )
-        
-        print(f"Found {len(flow_runs)} runs")
-        
-        for run in flow_runs:
-            print(f"Run: {run.id}")
-            print(f"Labels: {run.labels}")
 
-        deployment = client.read_deployment(deployment_id)
+        if len(flow_runs) == 0:
+            deployment = client.read_deployment(deployment_id)
         
-        # Only run if it has the tag
-        if "initial-deployment" in deployment.tags:
-            flow_run = client.create_flow_run_from_deployment(
-                deployment_id=deployment_id,
-                labels={"triggered-by": "initial-deployment-automation"},
-                tags=["initial-deployment-automation"]
-            )
-    
-            print(f"Successfully triggered run {flow_run.id} for deployment {deployment_id}")
+            # Only run if it has the tag
+            if "initial-deployment" in deployment.tags:
+                flow_run = client.create_flow_run_from_deployment(
+                    deployment_id=deployment_id,
+                    labels={"triggered-by": "initial-deployment-automation"},
+                    tags=["initial-deployment-automation"]
+                )
+        
+                print(f"Successfully triggered run {flow_run.id} for deployment {deployment_id}")
         else: 
             print(f"Did not trigger deployment {deployment_id}")
 
