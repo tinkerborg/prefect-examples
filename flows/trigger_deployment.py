@@ -12,7 +12,7 @@ def trigger_deployment(deployment_id: str):
     # Trigger the deployment. run_deployment accepts UUID or 'flow/deployment' name.
     # We use timeout=0 to return immediately so the audit flow finishes quickly.
     flow_run = run_deployment(
-        id=UUID(deployment_id), 
+        deployment_id=UUID(deployment_id), 
         timeout=0
     )
     
