@@ -17,6 +17,9 @@ def trigger_deployment(deployment_id: str):
             client.create_flow_run_from_deployment(deployment_id=deployment_id)
     
             print(f"Successfully triggered run {flow_run.id} for deployment {deployment_id}")
+        else: 
+            print(f"Did not trigger deployment {deployment_id}")
+
 
 if __name__ == "__main__":
     # Deploy this audit flow once so it has a stable UUID
