@@ -22,16 +22,7 @@ def trigger_deployment(deployment_id: str):
         
         for run in flow_runs:
             print(f"Run: {run.id}")
-            print(f"  State: {run.state.type}")
-            print(f"  Created: {run.created}")
-            
-            # Check what triggered it
-            if run.created_by:
-                print(f"  Created by: {run.created_by}")
-            
-            # Check for automation info
-            if run.state_details:
-                print(f"  State details: {run.state_details}")
+            print(run.dict())
 
         deployment = client.read_deployment(deployment_id)
         
