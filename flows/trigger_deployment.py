@@ -38,6 +38,8 @@ def trigger_deployment(deployment_id: str):
                     print(f"Successfully triggered run {flow_run.id} for deployment {deployment_id}")
             else: 
                 print(f"Did not trigger deployment {deployment_id}")
+        else:
+                print(f"Skipping {deployment_id} (not tagged)")
 
 
 if __name__ == "__main__":
