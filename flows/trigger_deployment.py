@@ -23,7 +23,7 @@ def trigger_deployment(deployment_id: str):
         
         for run in flow_runs:
             print(f"Run: {run.id}")
-            print(run.labels.dict())
+            print(f"Labels: {run.labels}")
 
         deployment = client.read_deployment(deployment_id)
         
