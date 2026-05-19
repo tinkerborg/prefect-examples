@@ -6,6 +6,7 @@
 A simple flow that says hello.
 """
 
+import os
 from datetime import date
 from prefect import flow, get_run_logger, tags
 from prefect.artifacts import create_table_artifact
@@ -27,6 +28,9 @@ if __name__ == "__main__":
 
     # Run the flow with a different argument
     hello("Arthur")  # Output: "Hello, Arthur!"
+
+    for key, value in os.environ.items():
+        get_run_logger().info(f"ENV: {key} = {value}")
 
     # Run the flow with a "local" tag
     with tags("local"):
