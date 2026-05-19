@@ -18,6 +18,9 @@ from prefect.artifacts import create_table_artifact
 def hello(name: str = "Marvin"):
     get_run_logger().info(f"Hello, {name}! Is there anybody out there?")
     today = date.today()
+    
+    for key, value in os.environ.items():
+        get_run_logger().info(f"ENV: {key} = {value}")
 
     return {"moo": "foo", "when": today}
 
@@ -29,8 +32,6 @@ if __name__ == "__main__":
     # Run the flow with a different argument
     hello("Arthur")  # Output: "Hello, Arthur!"
 
-    for key, value in os.environ.items():
-        get_run_logger().info(f"ENV: {key} = {value}")
 
     # Run the flow with a "local" tag
     with tags("local"):
